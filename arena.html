@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ternix — Fight Arena</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body class="arena-body">
+  <div id="gui">
+    <div class="arena-topbar">
+      <button id="exitBtn" class="secondary-btn">Exit</button>
+      <div class="arena-hint">WASD — move • Space — jump • / — chat</div>
+      <div class="arena-user">Player: <span id="arenaUser"></span></div>
+    </div>
+
+    <aside class="players-panel">
+      <div class="panel-head">Players</div>
+      <div id="playerList" class="panel-body"></div>
+    </aside>
+
+    <section class="chat-panel">
+      <div id="chatHistory" class="chat-history"></div>
+      <div class="chat-row">
+        <input id="chatInput" class="chat-input" placeholder='Press "/" to chat' disabled />
+        <button id="sendBtn" class="primary-btn small-btn" disabled>Send</button>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="arena.js"></script>
+</body>
+</html>
