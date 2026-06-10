@@ -1,21 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Ternix Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ternix</title>
+
+<link rel="stylesheet" href="styles.css">
+
 </head>
 <body>
 
-<h1>Ternix</h1>
+<div class="topbar">
+    <div class="logo">TERNIX</div>
+</div>
 
-<input id="user" placeholder="Username">
-<br><br>
+<div class="login-box">
 
-<input id="pass" type="password" placeholder="Password">
-<br><br>
+    <h1>Welcome to Ternix</h1>
+    <p>Create an account or login</p>
 
-<button onclick="register()">Register</button>
-<button onclick="login()">Login</button>
+    <input id="user" placeholder="Username">
+
+    <input id="pass" type="password" placeholder="Password">
+
+    <div class="buttons">
+        <button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+    </div>
+
+</div>
 
 <script src="auth.js"></script>
 
