@@ -1,59 +1,23 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ternix — Login</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<title>Ternix Login</title>
 </head>
-<body class="auth-body">
-  <main class="auth-shell">
-    <section class="auth-card">
-      <div class="brand-row">
-        <div class="brand-mark">T</div>
-        <div>
-          <h1>Ternix</h1>
-          <p>Log in or create an account</p>
-        </div>
-      </div>
+<body>
 
-      <div class="tabs">
-        <button id="loginTab" class="tab active">Login</button>
-        <button id="registerTab" class="tab">Register</button>
-      </div>
+<h1>Ternix</h1>
 
-      <form id="loginForm" class="form active">
-        <label>
-          Username
-          <input id="loginUser" autocomplete="username" />
-        </label>
-        <label>
-          Password
-          <input id="loginPass" type="password" autocomplete="current-password" />
-        </label>
-        <button type="submit" class="primary-btn">Enter</button>
-        <p id="loginMsg" class="msg"></p>
-      </form>
+<input id="user" placeholder="Username">
+<br><br>
 
-      <form id="registerForm" class="form">
-        <label>
-          Username
-          <input id="regUser" autocomplete="username" />
-        </label>
-        <label>
-          Password
-          <input id="regPass" type="password" autocomplete="new-password" />
-        </label>
-        <label>
-          Confirm password
-          <input id="regPass2" type="password" autocomplete="new-password" />
-        </label>
-        <button type="submit" class="primary-btn">Create account</button>
-        <p id="registerMsg" class="msg"></p>
-      </form>
-    </section>
-  </main>
+<input id="pass" type="password" placeholder="Password">
+<br><br>
 
-  <script src="auth.js"></script>
+<button onclick="register()">Register</button>
+<button onclick="login()">Login</button>
+
+<script src="auth.js"></script>
+
 </body>
 </html>
