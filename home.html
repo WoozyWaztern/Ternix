@@ -1,22 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ternix Home</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+
+.home-wrapper{
+    width:1100px;
+    max-width:95%;
+    margin:30px auto;
+}
+
+.user-panel{
+    background:white;
+    border:1px solid #bdbdbd;
+    padding:15px;
+    margin-bottom:20px;
+}
+
+.user-panel h2{
+    margin:0;
+    color:#1d4ed8;
+}
+
+.games-title{
+    font-size:24px;
+    margin-bottom:15px;
+}
+
+.game-card{
+    background:white;
+    border:1px solid #bdbdbd;
+    width:350px;
+    overflow:hidden;
+}
+
+.game-banner{
+    height:180px;
+    background:linear-gradient(
+        135deg,
+        #1d4ed8,
+        #3b82f6
+    );
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:34px;
+    font-weight:bold;
+}
+
+.game-info{
+    padding:15px;
+}
+
+.play-btn{
+    background:#facc15;
+    border:none;
+    padding:12px 25px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.logout-btn{
+    float:right;
+    background:#ef4444;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+</style>
+
 </head>
 <body>
 
-<h1>Home</h1>
+<div class="topbar">
+    <div class="logo">TERNIX</div>
+</div>
 
-<p>Welcome <span id="name"></span></p>
+<div class="home-wrapper">
 
-<button onclick="window.location='arena.html'">
-Play Fight Arena
-</button>
+    <div class="user-panel">
+
+        <button class="logout-btn" onclick="logout()">
+            Logout
+        </button>
+
+        <h2>
+            Welcome,
+            <span id="username"></span>
+        </h2>
+
+    </div>
+
+    <div class="games-title">
+        Games
+    </div>
+
+    <div class="game-card">
+
+        <div class="game-banner">
+            FIGHT ARENA
+        </div>
+
+        <div class="game-info">
+
+            <h3>Fight Arena</h3>
+
+            <p>
+                Jump, chat and fight with a sword.
+            </p>
+
+            <button class="play-btn" onclick="playArena()">
+                Play
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script>
-document.getElementById("name").innerText =
+
+document.getElementById("username").innerText =
 localStorage.getItem("ternix_user");
+
+function playArena(){
+    location.href="arena.html";
+}
+
+function logout(){
+    localStorage.removeItem("ternix_user");
+    location.href="index.html";
+}
+
 </script>
 
 </body>
