@@ -1,43 +1,23 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ternix — Home</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<title>Ternix Home</title>
 </head>
-<body class="home-body">
-  <header class="home-header">
-    <div class="home-left">
-      <div class="brand-mark small">T</div>
-      <div>
-        <div class="home-title">Ternix</div>
-        <div class="home-subtitle">Welcome, <span id="homeUser"></span></div>
-      </div>
-    </div>
+<body>
 
-    <button id="logoutBtn" class="secondary-btn">Logout</button>
-  </header>
+<h1>Home</h1>
 
-  <main class="home-main">
-    <section class="hero">
-      <h1>Home</h1>
-      <p>Choose a game and play directly in the browser.</p>
-    </section>
+<p>Welcome <span id="name"></span></p>
 
-    <section class="game-grid">
-      <article class="game-card">
-        <div class="game-thumb arena-thumb">Fight Arena</div>
-        <div class="game-info">
-          <h2>Fight Arena</h2>
-          <p>3D character, movement, jumping and chat.</p>
-          <button id="playArenaBtn" class="primary-btn">Play</button>
-        </div>
-      </article>
-    </section>
-  </main>
+<button onclick="window.location='arena.html'">
+Play Fight Arena
+</button>
 
-  <script src="auth.js"></script>
-  <script src="home.js"></script>
+<script>
+document.getElementById("name").innerText =
+localStorage.getItem("ternix_user");
+</script>
+
 </body>
 </html>
