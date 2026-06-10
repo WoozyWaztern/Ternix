@@ -1,30 +1,20 @@
-const USERS_KEY = 'ternix_users';
-const SESSION_KEY = 'ternix_session';
+function register() {
+    let user = document.getElementById("user").value;
+    let pass = document.getElementById("pass").value;
 
-function getUsers() {
-  try {
-    return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
-  } catch {
-    return [];
-  }
+    localStorage.setItem(user, pass);
+
+    alert("Account created!");
 }
 
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
+function login() {
+    let user = document.getElementById("user").value;
+    let pass = document.getElementById("pass").value;
 
-function setSession(username) {
-  localStorage.setItem(SESSION_KEY, username);
+    if(localStorage.getItem(user) === pass) {
+        localStorage.setItem("ternix_user", user);
+        window.location = "home.html";
+    } else {
+        alert("Wrong password!");
+    }
 }
-
-function getSession() {
-  return localStorage.getItem(SESSION_KEY);
-}
-
-function clearSession() {
-  localStorage.removeItem(SESSION_KEY);
-}
-
-function ensureAuthRedirect() {
-  const onAuthPage = location.pathname.endsWith('index.html') || location.pathname === '/' || location.pathname.endsWith('/');
-  const onGamePage = location.pathname.endsWith('hom
