@@ -1,0 +1,87 @@
+:root {
+  width: 100%; border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; outline: none; background: #fff;
+}
+input:focus { border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(79,140,255,.15); }
+.primary-btn, .secondary-btn {
+  border: 0; border-radius: 14px; padding: 12px 16px; cursor: pointer;
+  font-weight: 700;
+}
+.primary-btn { background: var(--accent); color: #111827; }
+.secondary-btn { background: #e5e7eb; color: #111827; }
+.msg { min-height: 20px; margin: 0; color: #dc2626; font-size: 13px; }
+
+.home-body {
+  background: linear-gradient(180deg, #eaf2ff 0%, #ffffff 100%);
+  color: var(--text);
+}
+.home-header {
+  height: 72px; padding: 0 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,.8); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+.home-title { font-size: 18px; font-weight: 800; }
+.home-main { width: min(1100px, calc(100% - 32px)); margin: 30px auto; }
+.hero {
+  background: linear-gradient(135deg, #111827, #334155);
+  color: #fff; border-radius: 24px; padding: 28px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.16);
+}
+.game-grid { margin-top: 22px; display: grid; gap: 18px; }
+.game-card {
+  display: grid; grid-template-columns: 240px 1fr; gap: 18px;
+  background: rgba(255,255,255,.9); border: 1px solid var(--border);
+  border-radius: 24px; padding: 16px;
+}
+.game-thumb {
+  border-radius: 18px; min-height: 160px; display: grid; place-items: center;
+  font-size: 26px; font-weight: 900; color: #fff;
+}
+.arena-thumb { background: linear-gradient(135deg, #4f8cff, #7c3aed); }
+.game-info h2 { margin: 6px 0 8px; }
+.game-info p { color: var(--muted); }
+
+.arena-body { overflow: hidden; background: #87ceeb; }
+#gui { position: fixed; inset: 0; pointer-events: none; }
+.arena-topbar {
+  pointer-events: auto;
+  position: absolute; left: 0; top: 0; right: 0; height: 54px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 12px; background: rgba(255,255,255,.9);
+  border-bottom: 1px solid var(--border);
+}
+.arena-hint { color: var(--muted); font-size: 13px; flex: 1; text-align: center; }
+.arena-user { font-size: 13px; color: #111827; }
+.players-panel {
+  position: absolute; right: 12px; top: 66px; width: 180px;
+  background: rgba(255,255,255,.9); border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden; pointer-events: auto;
+}
+.panel-head {
+  padding: 10px 12px; background: #eef2ff; border-bottom: 1px solid var(--border);
+  font-weight: 800;
+}
+.panel-body { padding: 10px 12px; min-height: 60px; }
+.chat-panel {
+  position: absolute; left: 12px; bottom: 12px; width: min(420px, calc(100% - 24px));
+  pointer-events: auto;
+}
+.chat-history {
+  height: 150px; overflow: auto; padding: 10px 12px;
+  background: rgba(15, 23, 42, 0.72); color: #fff;
+  border: 1px solid rgba(255,255,255,.18); border-radius: 18px 18px 8px 8px;
+}
+.chat-row { display: flex; gap: 8px; margin-top: 6px; }
+.chat-input {
+  flex: 1; background: rgba(255,255,255,.92); color: #111827;
+  border: 1px solid var(--border); border-radius: 12px; padding: 11px 12px;
+}
+.small-btn { padding: 11px 14px; }
+
+@media (max-width: 720px) {
+  .game-card { grid-template-columns: 1fr; }
+  .players-panel { width: 150px; }
+  .arena-hint { display: none; }
+}
