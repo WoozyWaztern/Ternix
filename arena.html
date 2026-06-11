@@ -23,7 +23,7 @@ background:white;
 border-bottom:2px solid #ccc;
 display:flex;
 align-items:center;
-z-index:10;
+z-index:100;
 }
 
 #exit{
@@ -35,7 +35,7 @@ padding:8px 15px;
 cursor:pointer;
 }
 
-#player{
+#playername{
 margin-left:auto;
 margin-right:15px;
 }
@@ -45,13 +45,13 @@ position:absolute;
 left:10px;
 bottom:10px;
 width:320px;
-z-index:20;
+z-index:100;
 }
 
 #messages{
 height:150px;
 overflow-y:auto;
-background:rgba(0,0,0,0.65);
+background:rgba(0,0,0,0.7);
 color:white;
 padding:5px;
 font-size:14px;
@@ -78,12 +78,9 @@ padding:8px;
 
 <div id="topbar">
 
-<button id="exit">
-Exit
-</button>
+<button id="exit">Exit</button>
 
-<div id="player">
-Player:
+<div id="playername">
 <span id="username"></span>
 </div>
 
@@ -104,18 +101,19 @@ disabled>
 
 import * as THREE from "three";
 
-document.getElementById("username").innerText =
-localStorage.getItem("ternix_user");
+/* UI */
+
+document.getElementById("username").textContent =
+localStorage.getItem("ternix_user") || "Guest";
 
 document.getElementById("exit").onclick=()=>{
 location.href="home.html";
 };
 
-const scene =
-new THREE.Scene();
+/* SCENE */
 
-scene.background =
-new THREE.Color(0x87CEEB);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb);
 
 const camera =
 new THREE.PerspectiveCamera(
@@ -126,9 +124,7 @@ window.innerWidth/window.innerHeight,
 );
 
 const renderer =
-new THREE.WebGLRenderer({
-antialias:true
-});
+new THREE.WebGLRenderer({antialias:true});
 
 renderer.setSize(
 window.innerWidth,
@@ -139,32 +135,36 @@ document.body.appendChild(
 renderer.domElement
 );
 
-const light =
+/* LIGHT */
+
+scene.add(
+new THREE.AmbientLight(
+0xffffff,
+0.8
+)
+);
+
+const sun =
 new THREE.DirectionalLight(
 0xffffff,
 1
 );
 
-light.position.set(
+sun.position.set(
 20,
-30,
+40,
 20
 );
 
-scene.add(light);
+scene.add(sun);
 
-scene.add(
-new THREE.AmbientLight(
-0xffffff,
-0.7
-)
-);
+/* GROUND */
 
 const ground =
 new THREE.Mesh(
 new THREE.PlaneGeometry(
-300,
-300
+500,
+500
 ),
 new THREE.MeshStandardMaterial({
 color:0x55aa55
@@ -176,28 +176,25 @@ ground.rotation.x =
 
 scene.add(ground);
 
-/* BLOCKS */
+/* RANDOM BLOCKS */
 
-for(let i=0;i<25;i++){
+for(let i=0;i<20;i++){
 
 const block =
 new THREE.Mesh(
-
 new THREE.BoxGeometry(
-3,
-3,
-3
+4,
+4,
+4
 ),
-
 new THREE.MeshStandardMaterial({
 color:0x888888
 })
-
 );
 
 block.position.set(
 Math.random()*100-50,
-1.5,
+2,
 Math.random()*100-50
 );
 
@@ -212,6 +209,8 @@ new THREE.Group();
 
 scene.add(player);
 
+/* BODY */
+
 const body =
 new THREE.Mesh(
 new THREE.BoxGeometry(
@@ -224,49 +223,85 @@ color:0x2563eb
 })
 );
 
-body.position.y=1.5;
+body.position.y=3;
 
 player.add(body);
+
+/* HEAD */
 
 const head =
 new THREE.Mesh(
 new THREE.BoxGeometry(
-1.4,
-1.4,
-1.4
+1.5,
+1.5,
+1.5
 ),
 new THREE.MeshStandardMaterial({
 color:0xffdbac
 })
 );
 
-head.position.y=4;
+head.position.y=5.5;
 
 player.add(head);
 
-/* CAMERA */
+/* ARMS */
 
-let cameraAngle = 0;
+function arm(x){
 
-camera.position.set(
-0,
-8,
-10
+const a =
+new THREE.Mesh(
+new THREE.BoxGeometry(
+0.7,
+2.5,
+0.7
+),
+new THREE.MeshStandardMaterial({
+color:0xffdbac
+})
 );
 
-window.addEventListener(
-"mousemove",
-(e)=>{
+a.position.set(
+x,
+3,
+0
+);
 
-if(e.buttons===1){
-
-cameraAngle +=
-e.movementX*0.01;
+player.add(a);
 
 }
 
-}
+arm(-1.4);
+arm(1.4);
+
+/* LEGS */
+
+function leg(x){
+
+const l =
+new THREE.Mesh(
+new THREE.BoxGeometry(
+0.8,
+2.5,
+0.8
+),
+new THREE.MeshStandardMaterial({
+color:0x1e40af
+})
 );
+
+l.position.set(
+x,
+1,
+0
+);
+
+player.add(l);
+
+}
+
+leg(-0.5);
+leg(0.5);
 
 /* MOVEMENT */
 
@@ -275,37 +310,61 @@ let keys={};
 window.addEventListener(
 "keydown",
 e=>{
-keys[e.key.toLowerCase()]=true;
-}
-);
+keys[e.code]=true;
+});
 
 window.addEventListener(
 "keyup",
 e=>{
-keys[e.key.toLowerCase()]=false;
-}
-);
+keys[e.code]=false;
+});
 
 let velocityY=0;
 let grounded=true;
 
+/* CAMERA */
+
+let camAngle=0;
+let mouseDown=false;
+
+window.addEventListener(
+"mousedown",
+()=>{
+mouseDown=true;
+});
+
+window.addEventListener(
+"mouseup",
+()=>{
+mouseDown=false;
+});
+
+window.addEventListener(
+"mousemove",
+e=>{
+
+if(mouseDown){
+
+camAngle -=
+e.movementX*0.01;
+
+}
+
+});
+
 /* CHAT */
 
 const chatInput =
-document.getElementById(
-"chatInput"
-);
+document.getElementById("chatInput");
 
 const messages =
-document.getElementById(
-"messages"
-);
+document.getElementById("messages");
 
 window.addEventListener(
 "keydown",
-(e)=>{
+e=>{
 
-if(e.key==="/"){
+if(e.code==="Slash"){
 
 e.preventDefault();
 
@@ -315,35 +374,25 @@ chatInput.focus();
 
 }
 
-}
-);
+});
 
 chatInput.addEventListener(
 "keydown",
-(e)=>{
+e=>{
 
 if(e.key==="Enter"){
 
-if(
-chatInput.value.trim()
-!==""
-){
+if(chatInput.value.trim()){
 
 const div =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 div.textContent =
-localStorage.getItem(
-"ternix_user"
-)
+(localStorage.getItem("ternix_user") || "Guest")
 +": "
 +chatInput.value;
 
-messages.appendChild(
-div
-);
+messages.appendChild(div);
 
 messages.scrollTop =
 messages.scrollHeight;
@@ -356,8 +405,7 @@ chatInput.disabled=true;
 
 }
 
-}
-);
+});
 
 /* LOOP */
 
@@ -369,38 +417,37 @@ animate
 
 const speed=0.18;
 
-if(keys["w"]){
+if(keys["KeyW"]){
 
 player.position.z-=speed;
 player.rotation.y=0;
 
 }
 
-if(keys["s"]){
+if(keys["KeyS"]){
 
 player.position.z+=speed;
 player.rotation.y=Math.PI;
 
 }
 
-if(keys["a"]){
+if(keys["KeyA"]){
 
 player.position.x-=speed;
 player.rotation.y=Math.PI/2;
 
 }
 
-if(keys["d"]){
+if(keys["KeyD"]){
 
 player.position.x+=speed;
 player.rotation.y=-Math.PI/2;
 
 }
 
-if(keys[" "]&&grounded){
+if(keys["Space"] && grounded){
 
 velocityY=0.35;
-
 grounded=false;
 
 }
@@ -412,20 +459,18 @@ player.position.y+=velocityY;
 if(player.position.y<0){
 
 player.position.y=0;
-
 velocityY=0;
-
 grounded=true;
 
 }
 
 camera.position.x=
 player.position.x+
-Math.sin(cameraAngle)*10;
+Math.sin(camAngle)*12;
 
 camera.position.z=
 player.position.z+
-Math.cos(cameraAngle)*10;
+Math.cos(camAngle)*12;
 
 camera.position.y=
 player.position.y+8;
@@ -457,11 +502,9 @@ camera.updateProjectionMatrix();
 
 renderer.setSize(
 window.innerWidth,
-window.innerHeight
-);
+window.innerHeight);
 
-}
-);
+});
 
 </script>
 
