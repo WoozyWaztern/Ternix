@@ -1,49 +1,66 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fight Arena</title>
+<title>Ternix Fight Arena</title>
 
 <style>
 
 body{
-    margin:0;
-    overflow:hidden;
-    font-family:Verdana;
+margin:0;
+overflow:hidden;
+font-family:Verdana;
 }
 
 #topbar{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:50px;
-
-    background:white;
-    border-bottom:2px solid #ccc;
-
-    display:flex;
-    align-items:center;
-
-    z-index:10;
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:50px;
+background:white;
+border-bottom:2px solid #ccc;
+display:flex;
+align-items:center;
+z-index:10;
 }
 
 #exit{
-    margin-left:10px;
-
-    background:#ef4444;
-    color:white;
-
-    border:none;
-    padding:8px 15px;
-
-    cursor:pointer;
+margin-left:10px;
+background:#ef4444;
+color:white;
+border:none;
+padding:8px 15px;
+cursor:pointer;
 }
 
 #player{
-    margin-left:auto;
-    margin-right:15px;
+margin-left:auto;
+margin-right:15px;
+}
+
+#chat{
+position:absolute;
+left:10px;
+bottom:10px;
+width:320px;
+z-index:20;
+}
+
+#messages{
+height:150px;
+overflow-y:auto;
+background:rgba(0,0,0,0.65);
+color:white;
+padding:5px;
+font-size:14px;
+}
+
+#chatInput{
+width:100%;
+box-sizing:border-box;
+padding:8px;
 }
 
 </style>
@@ -72,6 +89,17 @@ Player:
 
 </div>
 
+<div id="chat">
+
+<div id="messages"></div>
+
+<input
+id="chatInput"
+placeholder='Нажми "/" для чата'
+disabled>
+
+</div>
+
 <script type="module">
 
 import * as THREE from "three";
@@ -83,7 +111,8 @@ document.getElementById("exit").onclick=()=>{
 location.href="home.html";
 };
 
-const scene = new THREE.Scene();
+const scene =
+new THREE.Scene();
 
 scene.background =
 new THREE.Color(0x87CEEB);
@@ -97,7 +126,9 @@ window.innerWidth/window.innerHeight,
 );
 
 const renderer =
-new THREE.WebGLRenderer();
+new THREE.WebGLRenderer({
+antialias:true
+});
 
 renderer.setSize(
 window.innerWidth,
@@ -114,14 +145,18 @@ new THREE.DirectionalLight(
 1
 );
 
-light.position.set(10,20,10);
+light.position.set(
+20,
+30,
+20
+);
 
 scene.add(light);
 
 scene.add(
 new THREE.AmbientLight(
 0xffffff,
-0.6
+0.7
 )
 );
 
@@ -140,6 +175,35 @@ ground.rotation.x =
 -Math.PI/2;
 
 scene.add(ground);
+
+/* BLOCKS */
+
+for(let i=0;i<25;i++){
+
+const block =
+new THREE.Mesh(
+
+new THREE.BoxGeometry(
+3,
+3,
+3
+),
+
+new THREE.MeshStandardMaterial({
+color:0x888888
+})
+
+);
+
+block.position.set(
+Math.random()*100-50,
+1.5,
+Math.random()*100-50
+);
+
+scene.add(block);
+
+}
 
 /* PLAYER */
 
@@ -180,26 +244,122 @@ head.position.y=4;
 
 player.add(head);
 
+/* CAMERA */
+
+let cameraAngle = 0;
+
 camera.position.set(
 0,
 8,
 10
 );
 
+window.addEventListener(
+"mousemove",
+(e)=>{
+
+if(e.buttons===1){
+
+cameraAngle +=
+e.movementX*0.01;
+
+}
+
+}
+);
+
+/* MOVEMENT */
+
 let keys={};
 
 window.addEventListener(
 "keydown",
-e=>keys[e.key.toLowerCase()]=true
+e=>{
+keys[e.key.toLowerCase()]=true;
+}
 );
 
 window.addEventListener(
 "keyup",
-e=>keys[e.key.toLowerCase()]=false
+e=>{
+keys[e.key.toLowerCase()]=false;
+}
 );
 
 let velocityY=0;
 let grounded=true;
+
+/* CHAT */
+
+const chatInput =
+document.getElementById(
+"chatInput"
+);
+
+const messages =
+document.getElementById(
+"messages"
+);
+
+window.addEventListener(
+"keydown",
+(e)=>{
+
+if(e.key==="/"){
+
+e.preventDefault();
+
+chatInput.disabled=false;
+
+chatInput.focus();
+
+}
+
+}
+);
+
+chatInput.addEventListener(
+"keydown",
+(e)=>{
+
+if(e.key==="Enter"){
+
+if(
+chatInput.value.trim()
+!==""
+){
+
+const div =
+document.createElement(
+"div"
+);
+
+div.textContent =
+localStorage.getItem(
+"ternix_user"
+)
++": "
++chatInput.value;
+
+messages.appendChild(
+div
+);
+
+messages.scrollTop =
+messages.scrollHeight;
+
+}
+
+chatInput.value="";
+
+chatInput.disabled=true;
+
+}
+
+}
+);
+
+/* LOOP */
 
 function animate(){
 
@@ -207,19 +367,37 @@ requestAnimationFrame(
 animate
 );
 
-if(keys["w"])
-player.position.z-=0.15;
+const speed=0.18;
 
-if(keys["s"])
-player.position.z+=0.15;
+if(keys["w"]){
 
-if(keys["a"])
-player.position.x-=0.15;
+player.position.z-=speed;
+player.rotation.y=0;
 
-if(keys["d"])
-player.position.x+=0.15;
+}
 
-if(keys[" "] && grounded){
+if(keys["s"]){
+
+player.position.z+=speed;
+player.rotation.y=Math.PI;
+
+}
+
+if(keys["a"]){
+
+player.position.x-=speed;
+player.rotation.y=Math.PI/2;
+
+}
+
+if(keys["d"]){
+
+player.position.x+=speed;
+player.rotation.y=-Math.PI/2;
+
+}
+
+if(keys[" "]&&grounded){
 
 velocityY=0.35;
 
@@ -242,10 +420,15 @@ grounded=true;
 }
 
 camera.position.x=
-player.position.x;
+player.position.x+
+Math.sin(cameraAngle)*10;
 
 camera.position.z=
-player.position.z+10;
+player.position.z+
+Math.cos(cameraAngle)*10;
+
+camera.position.y=
+player.position.y+8;
 
 camera.lookAt(
 player.position.x,
@@ -265,6 +448,7 @@ animate();
 window.addEventListener(
 "resize",
 ()=>{
+
 camera.aspect=
 window.innerWidth/
 window.innerHeight;
@@ -275,6 +459,7 @@ renderer.setSize(
 window.innerWidth,
 window.innerHeight
 );
+
 }
 );
 
@@ -282,3 +467,4 @@ window.innerHeight
 
 </body>
 </html>
+```
