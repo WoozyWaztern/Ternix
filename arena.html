@@ -340,7 +340,7 @@ scene.add(player);
 const loader = new GLTFLoader();
 
 loader.load(
-"Ternix Guy.glb",
+"TernixGuy.glb",
 gltf => {
 
 const model = gltf.scene;
@@ -618,7 +618,8 @@ renderer.render(scene, camera);
 }
 
 animate();
-
+  
+loader.load("TernixGuy.glb", ...)
 /* RESIZE */
 
 window.addEventListener("resize", () => {
