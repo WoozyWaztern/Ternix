@@ -43,41 +43,61 @@ margin-right:15px;
 font-weight:bold;
 }
 
-/* OLD SCHOOL CHAT */
+/* ROBLOX CHAT */
 
-#chat{
+#chatBox{
 position:absolute;
 left:10px;
 bottom:10px;
-width:340px;
+width:500px;
 z-index:100;
-background:#d4d0c8;
-border:2px solid #666;
-box-shadow:2px 2px 0 #888;
 }
 
 #messages{
-height:180px;
-overflow-y:auto;
-background:white;
-padding:5px;
-font-size:12px;
-color:black;
-border-bottom:1px solid #777;
+width:350px;
+display:flex;
+flex-direction:column;
+gap:4px;
+margin-bottom:6px;
+pointer-events:none;
 }
 
-#messages div{
-margin-bottom:2px;
+.chatMessage{
+background:rgba(0,0,0,0.55);
+color:white;
+padding:4px 8px;
+font-size:14px;
+border-radius:2px;
+width:max-content;
+max-width:350px;
+word-break:break-word;
+}
+
+#chatBar{
+height:28px;
+background:rgba(0,0,0,0.55);
+display:flex;
+align-items:center;
+padding-left:8px;
+}
+
+#chatHint{
+color:white;
+font-size:13px;
+user-select:none;
 }
 
 #chatInput{
+display:none;
 width:100%;
-box-sizing:border-box;
-padding:5px;
+height:100%;
+background:transparent;
 border:none;
 outline:none;
-font-size:12px;
-background:white;
+color:white;
+font-size:13px;
+padding-left:4px;
+font-family:Tahoma,Verdana,sans-serif;
 }
 
 </style>
