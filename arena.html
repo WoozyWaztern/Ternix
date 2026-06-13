@@ -528,33 +528,7 @@ clearMovement();
 
 const speed = 0.10;
   
-/* DISABLE RIGHT MOUSE BUTTON */
 
-window.addEventListener("contextmenu", e => {
-e.preventDefault();
-});
-
-window.addEventListener("mousedown", e => {
-
-if(e.button === 2){
-
-e.preventDefault();
-e.stopPropagation();
-
-}
-
-});
-
-window.addEventListener("mouseup", e => {
-
-if(e.button === 2){
-
-e.preventDefault();
-e.stopPropagation();
-
-}
-
-});
   
 /* WASD */
 
