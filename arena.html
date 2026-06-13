@@ -583,8 +583,15 @@ messages.scrollHeight;
 
 chatInput.value="";
 
-chatInput.blur();
+chatInput.style.display=
+"none";
 
+document.getElementById(
+"chatHint"
+).style.display=
+"block";
+
+chatInput.blur();
 }
 
 if(e.key==="Escape"){
