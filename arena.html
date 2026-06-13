@@ -47,18 +47,22 @@ font-weight:bold;
 
 #chatBox{
 position:absolute;
-left:10px;
-bottom:10px;
-width:500px;
+left:0;
+right:0;
+bottom:0;
 z-index:100;
+pointer-events:none;
 }
 
 #messages{
-width:350px;
+position:absolute;
+left:10px;
+bottom:34px;
 display:flex;
 flex-direction:column;
+align-items:flex-start;
 gap:4px;
-margin-bottom:6px;
+max-width:420px;
 pointer-events:none;
 }
 
@@ -69,37 +73,44 @@ padding:4px 8px;
 font-size:14px;
 border-radius:2px;
 width:max-content;
-max-width:350px;
+max-width:420px;
 word-break:break-word;
 }
 
 #chatBar{
+position:absolute;
+left:0;
+right:0;
+bottom:0;
 height:28px;
 background:rgba(0,0,0,0.55);
 display:flex;
 align-items:center;
-padding-left:8px;
+padding:0 8px;
+box-sizing:border-box;
+pointer-events:auto;
 }
 
 #chatHint{
 color:white;
 font-size:13px;
 user-select:none;
+white-space:nowrap;
 }
 
 #chatInput{
 display:none;
-width:100%;
+flex:1;
 height:100%;
 background:transparent;
 border:none;
 outline:none;
 color:white;
 font-size:13px;
-padding-left:4px;
 font-family:Tahoma,Verdana,sans-serif;
+padding-left:6px;
+box-sizing:border-box;
 }
-
 </style>
 
 <script type="importmap">
@@ -420,316 +431,220 @@ leg(0.5);
 
 /* MOVEMENT */
 
-let keys={};
-let chatOpen=false;
-
-window.addEventListener(
-"keydown",
-e=>{
-
-if(chatOpen) return;
-
-keys[e.code]=true;
-
-});
-
-window.addEventListener(
-"keyup",
-e=>{
-
-keys[e.code]=false;
-
-});
-
-let velocityY=0;
-let grounded=true;
+const keys = Object.create(null);
+let chatOpen = false;
+let velocityY = 0;
+let grounded = true;
 
 /* CAMERA */
 
-let camAngle=0;
-let mouseDown=false;
+let camAngle = 0;
+let mouseDown = false;
 
-window.addEventListener(
-"mousedown",
-e=>{
-
-if(document.activeElement===chatInput)
-return;
-
-mouseDown=true;
-
-});
-
-window.addEventListener(
-"mouseup",
-()=>{
-
-mouseDown=false;
-
-});
-
-window.addEventListener(
-"mousemove",
-e=>{
-
-if(mouseDown){
-
-camAngle -=
-e.movementX*0.01;
-
+function clearMovement(){
+keys["KeyW"] = false;
+keys["KeyA"] = false;
+keys["KeyS"] = false;
+keys["KeyD"] = false;
+keys["Space"] = false;
+mouseDown = false;
 }
 
+window.addEventListener("blur", () => {
+clearMovement();
+});
+
+document.addEventListener("visibilitychange", () => {
+if(document.hidden){
+clearMovement();
+}
+});
+
+window.addEventListener("keydown", e => {
+if(e.code === "Slash" && !chatOpen){
+e.preventDefault();
+openChat();
+return;
+}
+
+if(chatOpen) return;
+
+if(["KeyW","KeyA","KeyS","KeyD","Space"].includes(e.code)){
+e.preventDefault();
+}
+
+if(!e.repeat){
+keys[e.code] = true;
+}
+});
+
+window.addEventListener("keyup", e => {
+keys[e.code] = false;
+});
+
+window.addEventListener("mousedown", () => {
+if(chatOpen) return;
+mouseDown = true;
+});
+
+window.addEventListener("mouseup", () => {
+mouseDown = false;
+});
+
+window.addEventListener("mousemove", e => {
+if(mouseDown){
+camAngle -= e.movementX * 0.01;
+}
 });
 
 /* CHAT */
 
-const chatInput =
-document.getElementById(
-"chatInput"
-);
+const chatInput = document.getElementById("chatInput");
+const messages = document.getElementById("messages");
+const chatHint = document.getElementById("chatHint");
+const chatBar = document.getElementById("chatBar");
 
-const messages =
-document.getElementById(
-"messages"
-);
-
-chatInput.addEventListener(
-"focus",
-()=>{
-
-chatOpen=true;
-
-}
-);
-
-chatInput.addEventListener(
-"blur",
-()=>{
-
-chatOpen=false;
-
-}
-);
-
-window.addEventListener(
-"keydown",
-e=>{
-
-if(chatOpen)
-return;
-
-if(e.code==="Slash"){
-
-e.preventDefault();
-
-chatOpen=true;
-
-document.getElementById(
-"chatHint"
-).style.display="none";
-
-chatInput.style.display="block";
-
+function openChat(){
+chatOpen = true;
+clearMovement();
+chatHint.style.display = "none";
+chatInput.style.display = "block";
 chatInput.focus();
-
 }
 
+function closeChat(){
+chatOpen = false;
+chatInput.value = "";
+chatInput.style.display = "none";
+chatHint.style.display = "block";
+chatInput.blur();
+clearMovement();
+}
+
+chatBar.addEventListener("click", () => {
+openChat();
 });
 
-chatInput.addEventListener(
-"keydown",
-e=>{
+chatInput.addEventListener("focus", () => {
+chatOpen = true;
+clearMovement();
+});
 
+chatInput.addEventListener("blur", () => {
+chatOpen = false;
+mouseDown = false;
+clearMovement();
+});
+
+chatInput.addEventListener("keydown", e => {
 e.stopPropagation();
 
-if(e.key==="Enter"){
+if(e.key === "Enter"){
+const text = chatInput.value.trim();
 
-if(chatInput.value.trim()){
-
-const div =
-document.createElement(
-"div"
-);
-
-div.className =
-"chatMessage";
-
+if(text){
+const div = document.createElement("div");
+div.className = "chatMessage";
 div.textContent =
-"(" +
-(localStorage.getItem(
-"ternix_user"
-) || "Guest")
-+
-"): "
-+
-chatInput.value;
+"(" + (localStorage.getItem("ternix_user") || "Guest") + "): " + text;
 
-messages.appendChild(
-div
-);
+messages.appendChild(div);
 
-while(
-messages.children.length > 8
-){
-messages.removeChild(
-messages.firstChild
-);
+while(messages.children.length > 8){
+messages.removeChild(messages.firstChild);
+}
 }
 
-messages.scrollTop =
-messages.scrollHeight;
-
+closeChat();
 }
 
-chatInput.value="";
-
-chatInput.style.display=
-"none";
-
-document.getElementById(
-"chatHint"
-).style.display=
-"block";
-
-chatInput.blur();
+if(e.key === "Escape"){
+closeChat();
 }
-
-if(e.key==="Escape"){
-
-chatInput.value="";
-
-chatInput.style.display=
-"none";
-
-document.getElementById(
-"chatHint"
-).style.display=
-"block";
-
-chatInput.blur();
-
-}
-
 });
 
 /* LOOP */
 
 function animate(){
-
-requestAnimationFrame(
-animate
-);
-
-/* STOP MOVEMENT IN CHAT */
+requestAnimationFrame(animate);
 
 if(chatOpen){
-
-keys["KeyW"]=false;
-keys["KeyA"]=false;
-keys["KeyS"]=false;
-keys["KeyD"]=false;
-keys["Space"]=false;
-
+clearMovement();
 }
 
-const speed=0.18;
+const speed = 0.18;
 
 /* WASD */
 
 if(keys["KeyW"]){
-
-player.position.z-=speed;
-player.rotation.y=0;
-
+player.position.z -= speed;
+player.rotation.y = 0;
 }
 
 if(keys["KeyS"]){
-
-player.position.z+=speed;
-player.rotation.y=Math.PI;
-
+player.position.z += speed;
+player.rotation.y = Math.PI;
 }
 
 if(keys["KeyA"]){
-
-player.position.x-=speed;
-player.rotation.y=Math.PI/2;
-
+player.position.x -= speed;
+player.rotation.y = Math.PI / 2;
 }
 
 if(keys["KeyD"]){
-
-player.position.x+=speed;
-player.rotation.y=-Math.PI/2;
-
+player.position.x += speed;
+player.rotation.y = -Math.PI / 2;
 }
 
 /* JUMP */
 
-if(
-keys["Space"]
-&& grounded
-){
-
-velocityY=0.35;
-
-grounded=false;
-
+if(keys["Space"] && grounded){
+velocityY = 0.35;
+grounded = false;
 }
 
 /* GRAVITY */
 
-velocityY-=0.015;
+velocityY -= 0.015;
+player.position.y += velocityY;
 
-player.position.y+=velocityY;
-
-if(player.position.y<0){
-
-player.position.y=0;
-
-velocityY=0;
-
-grounded=true;
-
+if(player.position.y < 0){
+player.position.y = 0;
+velocityY = 0;
+grounded = true;
 }
 
 /* CAMERA FOLLOW */
 
-camera.position.x=
-player.position.x+
-Math.sin(camAngle)*12;
+camera.position.x =
+player.position.x +
+Math.sin(camAngle) * 12;
 
-camera.position.z=
-player.position.z+
-Math.cos(camAngle)*12;
+camera.position.z =
+player.position.z +
+Math.cos(camAngle) * 12;
 
-camera.position.y=
-player.position.y+8;
+camera.position.y =
+player.position.y + 8;
 
 camera.lookAt(
 player.position.x,
-player.position.y+3,
+player.position.y + 3,
 player.position.z
 );
 
-renderer.render(
-scene,
-camera
-);
-
+renderer.render(scene, camera);
 }
 
 animate();
 
 /* RESIZE */
 
-window.addEventListener(
-"resize",
-()=>{
-
-camera.aspect=
-window.innerWidth/
-window.innerHeight;
+window.addEventListener("resize", () => {
+camera.aspect = window.innerWidth / window.innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 camera.updateProjectionMatrix();
 
