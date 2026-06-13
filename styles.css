@@ -61,3 +61,9 @@ body{
 .buttons button:hover{
     background:#eab308;
 }
+#logo{
+display:block;
+margin:20px auto;
+width:500px;
+max-width:95%;
+}
