@@ -450,6 +450,35 @@ if(mouseDown){
 camAngle -= e.movementX * 0.01;
 }
 });
+  window.addEventListener("mousemove", e => {
+if(mouseDown){
+camAngle -= e.movementX * 0.01;
+}
+});
+
+/* DISABLE RIGHT MOUSE BUTTON */
+
+window.addEventListener("contextmenu", e => {
+e.preventDefault();
+});
+
+window.addEventListener("mousedown", e => {
+
+if(e.button === 2){
+e.preventDefault();
+e.stopPropagation();
+}
+
+});
+
+window.addEventListener("mouseup", e => {
+
+if(e.button === 2){
+e.preventDefault();
+e.stopPropagation();
+}
+
+});
 
 /* CHAT */
 
