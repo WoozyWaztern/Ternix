@@ -347,9 +347,9 @@ const model = gltf.scene;
 
 /* размер модели */
 model.scale.set(
-1,
-1,
-1
+0.35,
+0.35,
+0.35
 );
 
 /* положение */
@@ -525,7 +525,7 @@ if(chatOpen){
 clearMovement();
 }
 
-const speed = 0.18;
+const speed = 0.10;
   
 /* DISABLE RIGHT MOUSE BUTTON */
 
@@ -559,22 +559,22 @@ e.stopPropagation();
 
 if(keys["KeyW"]){
 player.position.z -= speed;
-player.rotation.y = 0;
+targetRotation = 0;
 }
 
 if(keys["KeyS"]){
 player.position.z += speed;
-player.rotation.y = Math.PI;
+targetRotation = Math.PI;
 }
 
 if(keys["KeyA"]){
 player.position.x -= speed;
-player.rotation.y = Math.PI / 2;
+targetRotation = Math.PI / 2;
 }
 
 if(keys["KeyD"]){
 player.position.x += speed;
-player.rotation.y = -Math.PI / 2;
+targetRotation = -Math.PI / 2;
 }
 
 /* JUMP */
@@ -596,18 +596,21 @@ grounded = true;
 }
 
 /* CAMERA FOLLOW */
+  
+player.rotation.y +=
+(targetRotation - player.rotation.y) * 0.15;
 
 camera.position.x =
 player.position.x +
-Math.sin(camAngle) * 12;
+Math.sin(camAngle) * 20;
 
 camera.position.z =
 player.position.z +
-Math.cos(camAngle) * 12;
+Math.cos(camAngle) * 20;
 
 camera.position.y =
-player.position.y + 8;
-
+player.position.y + 12;
+  
 camera.lookAt(
 player.position.x,
 player.position.y + 3,
@@ -618,6 +621,8 @@ renderer.render(scene, camera);
 }
 
 animate();
+  
+let targetRotation = 0;  
   
 /* RESIZE */
 
