@@ -524,6 +524,12 @@ e.preventDefault();
 
 chatOpen=true;
 
+document.getElementById(
+"chatHint"
+).style.display="none";
+
+chatInput.style.display="block";
+
 chatInput.focus();
 
 }
@@ -545,18 +551,30 @@ document.createElement(
 "div"
 );
 
+div.className =
+"chatMessage";
+
 div.textContent =
+"(" +
 (localStorage.getItem(
 "ternix_user"
 ) || "Guest")
 +
-": "
+"): "
 +
 chatInput.value;
 
 messages.appendChild(
 div
 );
+
+while(
+messages.children.length > 8
+){
+messages.removeChild(
+messages.firstChild
+);
+}
 
 messages.scrollTop =
 messages.scrollHeight;
@@ -572,6 +590,14 @@ chatInput.blur();
 if(e.key==="Escape"){
 
 chatInput.value="";
+
+chatInput.style.display=
+"none";
+
+document.getElementById(
+"chatHint"
+).style.display=
+"block";
 
 chatInput.blur();
 
