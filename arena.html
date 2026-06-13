@@ -483,11 +483,16 @@ window.addEventListener("keyup", e => {
 keys[e.code] = false;
 });
 
-window.addEventListener("mousedown", () => {
-if(chatOpen) return;
-mouseDown = true;
-});
+window.addEventListener("mousedown", e => {
 
+if(chatOpen) return;
+
+if(e.button !== 0) return;
+
+mouseDown = true;
+
+});
+  
 window.addEventListener("mouseup", () => {
 mouseDown = false;
 });
