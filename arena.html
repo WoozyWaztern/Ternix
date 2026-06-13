@@ -156,6 +156,7 @@ maxlength="120">
 <script type="module">
 
 import * as THREE from "three";
+import { GLTFLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
 
 /* UI */
 
@@ -329,106 +330,48 @@ createPlatform(
 10,1,10,
 0x999999
 );
-
+  
 /* PLAYER */
-const player =
-new THREE.Group();
+
+const player = new THREE.Group();
 
 scene.add(player);
 
-/* BODY */
+const loader = new GLTFLoader();
 
-const body =
-new THREE.Mesh(
-new THREE.BoxGeometry(
-2,
-3,
-1
-),
-new THREE.MeshStandardMaterial({
-color:0x2563eb
-})
-);
+loader.load(
+"Ternix Guy.glb",
+gltf => {
 
-body.position.y=3;
+const model = gltf.scene;
 
-player.add(body);
-
-/* HEAD */
-
-const head =
-new THREE.Mesh(
-new THREE.BoxGeometry(
-1.5,
-1.5,
-1.5
-),
-new THREE.MeshStandardMaterial({
-color:0xffdbac
-})
-);
-
-head.position.y=5.5;
-
-player.add(head);
-
-/* ARMS */
-
-function arm(x){
-
-const a =
-new THREE.Mesh(
-new THREE.BoxGeometry(
-0.7,
-2.5,
-0.7
-),
-new THREE.MeshStandardMaterial({
-color:0xffdbac
-})
-);
-
-a.position.set(
-x,
-3,
-0
-);
-
-player.add(a);
-
-}
-
-arm(-1.4);
-arm(1.4);
-
-/* LEGS */
-
-function leg(x){
-
-const l =
-new THREE.Mesh(
-new THREE.BoxGeometry(
-0.8,
-2.5,
-0.8
-),
-new THREE.MeshStandardMaterial({
-color:0x1e40af
-})
-);
-
-l.position.set(
-x,
+/* размер модели */
+model.scale.set(
 1,
+1,
+1
+);
+
+/* положение */
+model.position.set(
+0,
+0,
 0
 );
 
-player.add(l);
+player.add(model);
+
+},
+undefined,
+error => {
+
+console.error(
+"Ошибка загрузки модели:",
+error
+);
 
 }
-
-leg(-0.5);
-leg(0.5);
+);
 
 /* MOVEMENT */
 
