@@ -5,65 +5,70 @@ body{
 }
 
 .topbar{
-    height:60px;
-    background:#1d4ed8;
-    border-bottom:4px solid #facc15;
+    height:80px;
+    background:#2452e6;
+    border-bottom:6px solid #facc15;
     display:flex;
     align-items:center;
-    padding-left:20px;
+    padding-left:15px;
+}
+
+.logo-image{
+    height:70px;
+    width:auto;
+}
+
+.login-box{
+    width:550px;
+    max-width:90%;
+    background:white;
+    margin:120px auto;
+    padding:30px;
+    border:1px solid #d0d0d0;
+}
+
+.login-box h1{
+    margin-top:0;
+    color:#2452e6;
+    font-size:54px;
+    font-weight:bold;
+}
+
+.login-box p{
+    color:#666;
+    font-size:20px;
+    margin-bottom:25px;
+}
+
+.login-box input{
+    width:100%;
+    box-sizing:border-box;
+    padding:14px;
+    margin-top:12px;
+    border:1px solid #aaa;
+    font-size:18px;
+}
+
+.buttons{
+    margin-top:20px;
+}
+
+.buttons button{
+    background:#facc15;
+    border:none;
+    padding:12px 28px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:18px;
+    margin-right:8px;
+}
+
+.buttons button:hover{
+    background:#eab308;
 }
 
 .logo{
     color:white;
     font-size:28px;
     font-weight:bold;
-}
-
-.login-box{
-    width:420px;
-    background:white;
-    margin:80px auto;
-    padding:25px;
-    border:1px solid #bdbdbd;
-    box-shadow:0 0 10px rgba(0,0,0,0.15);
-}
-
-.login-box h1{
-    margin-top:0;
-    color:#1d4ed8;
-}
-
-.login-box p{
-    color:#555;
-}
-
-.login-box input{
-    width:100%;
-    box-sizing:border-box;
-    padding:10px;
-    margin-top:10px;
-    border:1px solid #999;
-}
-
-.buttons{
-    margin-top:15px;
-}
-
-.buttons button{
-    background:#facc15;
-    border:none;
-    padding:10px 20px;
-    cursor:pointer;
-    font-weight:bold;
-    margin-right:5px;
-}
-
-.buttons button:hover{
-    background:#eab308;
-}
-#logo{
-display:block;
-margin:20px auto;
-width:500px;
-max-width:95%;
 }
