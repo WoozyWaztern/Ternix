@@ -558,24 +558,29 @@ const speed = 0.10;
   
 /* WASD */
 
-if(keys["KeyW"]){
-player.position.z -= speed;
-targetRotation = 0;
-}
+let moveX = 0;
+let moveZ = 0;
 
-if(keys["KeyS"]){
-player.position.z += speed;
-targetRotation = Math.PI;
-}
+if(keys["KeyW"]) moveZ -= 1;
+if(keys["KeyS"]) moveZ += 1;
+if(keys["KeyA"]) moveX -= 1;
+if(keys["KeyD"]) moveX += 1;
 
-if(keys["KeyA"]){
-player.position.x -= speed;
-targetRotation = Math.PI / 2;
-}
+if(moveX !== 0 || moveZ !== 0){
 
-if(keys["KeyD"]){
-player.position.x += speed;
-targetRotation = -Math.PI / 2;
+const dx =
+moveX * Math.cos(camAngle) -
+moveZ * Math.sin(camAngle);
+
+const dz =
+moveX * Math.sin(camAngle) +
+moveZ * Math.cos(camAngle);
+
+player.position.x += dx * speed;
+player.position.z += dz * speed;
+
+player.rotation.y =
+Math.atan2(dx, dz);
 }
 
 /* JUMP */
