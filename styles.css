@@ -1,144 +1,80 @@
 body{
     margin:0;
     font-family:Verdana,Arial,sans-serif;
-    background:#dcdcdc;
+    background:#e5e5e5;
 }
 
-/* Верхняя синяя панель */
+/* ВЕРХНЯЯ ПАНЕЛЬ */
 
 .topbar{
     height:80px;
-    background:#1d4ed8;
-    border-bottom:5px solid #facc15;
+    background:#2b2b2b;
+    border-bottom:6px solid #ff8c00;
     display:flex;
     align-items:center;
-    justify-content:flex-start;
     padding-left:15px;
 }
 
-/* Логотип */
+.logo-image{
+    height:70px;
+    width:auto;
 
-#logo{
-    width:280px;
-    height:auto;
-    display:block;
+    /* убирает белый фон если PNG прозрачный */
+    mix-blend-mode:multiply;
 }
 
-/* Окно логина */
+/* ЛОГИН */
 
 .login-box{
     width:500px;
     max-width:90%;
     background:white;
     margin:120px auto;
-    padding:30px;
+    padding:25px;
     border:1px solid #cfcfcf;
-    box-shadow:0 0 10px rgba(0,0,0,0.15);
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
 .login-box h1{
-    margin:0 0 15px 0;
-    color:#1d4ed8;
-    font-size:48px;
-    white-space:nowrap; /* Welcome to Ternix в одну строку */
+    margin-top:0;
+    margin-bottom:15px;
+    color:#2b2b2b;
+
+    /* помещается в одну строку */
+    font-size:42px;
+    white-space:nowrap;
 }
 
 .login-box p{
     color:#666;
     font-size:18px;
+    margin-bottom:20px;
 }
 
 .login-box input{
     width:100%;
     box-sizing:border-box;
-    padding:14px;
-    margin-top:12px;
-    border:1px solid #999;
+    padding:12px;
+    margin-top:10px;
+    border:1px solid #aaa;
     font-size:16px;
 }
 
 .buttons{
-    margin-top:20px;
+    margin-top:18px;
 }
 
 .buttons button{
-    background:#facc15;
+    background:#ff8c00;
+    color:white;
     border:none;
-    padding:12px 28px;
-    font-size:18px;
-    font-weight:bold;
+    padding:12px 24px;
     cursor:pointer;
+    font-weight:bold;
+    font-size:16px;
     margin-right:8px;
 }
 
 .buttons button:hover{
-    background:#eab308;
-}
-
-/* HOME PAGE */
-
-.home-wrapper{
-    width:1100px;
-    max-width:95%;
-    margin:30px auto;
-}
-
-.user-panel{
-    background:white;
-    border:1px solid #bdbdbd;
-    padding:15px;
-    margin-bottom:20px;
-}
-
-.user-panel h2{
-    margin:0;
-    color:#1d4ed8;
-}
-
-.games-title{
-    font-size:24px;
-    margin-bottom:15px;
-}
-
-.game-card{
-    background:white;
-    border:1px solid #bdbdbd;
-    width:350px;
-    overflow:hidden;
-}
-
-.game-banner{
-    height:180px;
-    background:linear-gradient(
-        135deg,
-        #1d4ed8,
-        #3b82f6
-    );
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:white;
-    font-size:34px;
-    font-weight:bold;
-}
-
-.game-info{
-    padding:15px;
-}
-
-.play-btn{
-    background:#facc15;
-    border:none;
-    padding:12px 25px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.logout-btn{
-    float:right;
-    background:#ef4444;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    cursor:pointer;
+    background:#e67e00;
 }
