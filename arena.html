@@ -452,7 +452,19 @@ if(mouseDown){
 camAngle -= e.movementX * 0.01;
 }
 });
+  
+window.addEventListener("wheel", e => {
 
+targetCameraDistance += e.deltaY * 0.01;
+
+if(targetCameraDistance < 3)
+targetCameraDistance = 3;
+
+if(targetCameraDistance > 20)
+targetCameraDistance = 20;
+
+});
+  
 /* DISABLE RIGHT MOUSE BUTTON */
 
 window.addEventListener("contextmenu", e => {
