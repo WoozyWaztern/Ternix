@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Ternix Fight Arena</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+font-family:Tahoma,Verdana,sans-serif;
+}
+
+/* TOP BAR */
+
+#topbar{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:50px;
+background:white;
+border-bottom:2px solid #aaa;
+display:flex;
+align-items:center;
+z-index:100;
+}
+
+#exit{
+margin-left:10px;
+background:#ef4444;
+color:white;
+border:none;
+padding:8px 15px;
+cursor:pointer;
+font-weight:bold;
+}
+
+#playername{
+margin-left:auto;
+margin-right:15px;
+font-weight:bold;
+}
+
+/* ROBLOX CHAT */
+
+#chatBox{
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+z-index:100;
+pointer-events:none;
+}
+
+#messages{
+position:fixed;
+left:10px;
+top:60px;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+gap:4px;
+max-width:420px;
+pointer-events:none;
+z-index:999;
+}
+
+.chatMessage{
+background:rgba(0,0,0,0.55);
+color:white;
+padding:4px 8px;
+font-size:14px;
+border-radius:2px;
+width:max-content;
+max-width:420px;
+word-break:break-word;
+}
+
+#chatBar{
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+height:28px;
+background:rgba(0,0,0,0.55);
+display:flex;
+align-items:center;
+padding:0 8px;
+box-sizing:border-box;
+pointer-events:auto;
+}
+
+#chatHint{
+color:white;
+font-size:13px;
+user-select:none;
+white-space:nowrap;
+}
+
+#chatInput{
+display:none;
+flex:1;
+height:100%;
+background:transparent;
+border:none;
+outline:none;
+color:white;
+font-size:13px;
+font-family:Tahoma,Verdana,sans-serif;
+padding-left:6px;
+box-sizing:border-box;
+}
+</style>
+
+<script type="importmap">
+{
+"imports":{
+"three":"https://unpkg.com/three@0.160.0/build/three.module.js"
+}
+}
+</script>
+
+</head>
+<body>
+
+<div id="topbar">
+
+<button id="exit">Exit</button>
+
+<div id="playername">
+<span id="username"></span>
+</div>
+
+</div>
+
+<div id="chatBox">
+
+<div id="messages"></div>
+
+<div id="chatBar">
+
+<span id="chatHint">
+To chat click here or press "/" key
+</span>
+
+<input
+id="chatInput"
+maxlength="120">
+
+</div>
+
+</div>
+
+<script type="module">
+
+import * as THREE from "three";
+import { GLTFLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
+
+/* UI */
+
+document.getElementById("username").textContent =
+localStorage.getItem("ternix_user") || "Guest";
+
+document.getElementById("exit").onclick=()=>{
+location.href="home.html";
+};
+
+/* SCENE */
+
+const scene = new THREE.Scene();
+
+scene.background =
+new THREE.Color(0x87ceeb);
+
+/* CAMERA */
+
+const camera =
+new THREE.PerspectiveCamera(
+75,
+window.innerWidth/window.innerHeight,
+0.1,
+1000
+);
+
+/* RENDERER */
+
+const renderer =
+new THREE.WebGLRenderer({
+antialias:true
+});
+
+renderer.setSize(
+window.innerWidth,
+window.innerHeight
+);
+
+document.body.appendChild(
+renderer.domElement
+);
+
+/* LIGHT */
+
+scene.add(
+new THREE.AmbientLight(
+0xffffff,
+0.8
+)
+);
+
+const sun =
+new THREE.DirectionalLight(
+0xffffff,
+1
+);
+
+sun.position.set(
+20,
+40,
+20
+);
+
+scene.add(sun);
+
+/* GROUND */
+
+const ground =
+new THREE.Mesh(
+new THREE.PlaneGeometry(
+500,
+500
+),
+new THREE.MeshStandardMaterial({
+color:0x55aa55
+})
+);
+
+ground.rotation.x =
+-Math.PI/2;
+
+scene.add(ground);
+
+/* RANDOM BLOCKS */
+
+for(let i=0;i<20;i++){
+
+const block =
+new THREE.Mesh(
+new THREE.BoxGeometry(
+4,
+4,
+4
+),
+new THREE.MeshStandardMaterial({
+color:0x888888
+})
+);
+
+block.position.set(
+Math.random()*100-50,
+2,
+Math.random()*100-50
+);
+
+scene.add(block);
+
+}
+  
+/* PLATFORMS */
+
+const platforms = [];
+
+function createPlatform(
+x,
+y,
+z,
+w,
+h,
+d,
+color
+){
+  
+const p =
+new THREE.Mesh(
+new THREE.BoxGeometry(
+w,
+h,
+d
+),
+new THREE.MeshStandardMaterial({
+color:color
+})
+);
+
+p.position.set(
+x,
+y,
+z
+);
+
+scene.add(p);
+
+platforms.push(p);
+
+}
+
+createPlatform(
+10,3,-10,
+8,1,8,
+0x777777
+);
+
+createPlatform(
+20,6,-20,
+8,1,8,
+0x777777
+);
+
+createPlatform(
+30,9,-30,
+8,1,8,
+0x777777
+);
+
+createPlatform(
+-15,4,15,
+10,1,10,
+0x999999
+);
+
+createPlatform(
+-25,8,20,
+10,1,10,
+0x999999
+);
+  
+/* PLAYER */
+
+const player = new THREE.Group();
+
+scene.add(player);
+
+const loader = new GLTFLoader();
+
+loader.load(
+"TernixGuy.glb",
+gltf => {
+
+const model = gltf.scene;
+
+/* размер модели */
+model.scale.set(
+1,
+1,
+1
+);
+
+/* положение */
+model.position.set(
+0,
+0,
+0
+);
+
+player.add(model);
+
+},
+undefined,
+error => {
+
+console.error(
+"Ошибка загрузки модели:",
+error
+);
+
+}
+);
+
+/* MOVEMENT */
+
+const keys = Object.create(null);
+let chatOpen = false;
+let velocityY = 0;
+let grounded = true;
+
+/* CAMERA */
+let camAngle = 0;
+let mouseDown = false;
+   
+function clearMovement(){
+keys["KeyW"] = false;
+keys["KeyA"] = false;
+keys["KeyS"] = false;
+keys["KeyD"] = false;
+keys["Space"] = false;
+mouseDown = false;
+}
+
+
+window.addEventListener("blur", () => {
+clearMovement();
+});
+
+document.addEventListener("visibilitychange", () => {
+if(document.hidden){
+clearMovement();
+}
+});
+
+let firstPerson = false;
+
+window.addEventListener("keydown", e => {
+
+if(e.code === "Slash" && !chatOpen){
+e.preventDefault();
+openChat();
+return;
+}
+
+if(chatOpen) return;
+
+if(e.code === "KeyQ"){
+firstPerson = !firstPerson;
+}
+
+if(["KeyW","KeyA","KeyS","KeyD","Space"].includes(e.code)){
+e.preventDefault();
+}
+
+keys[e.code] = true;
+
+});
+
+window.addEventListener("keyup", e => {
+keys[e.code] = false;
+});
+
+window.addEventListener("mousedown", e => {
+
+if(chatOpen) return;
+
+if(e.button !== 0) return;
+
+mouseDown = true;
+
+});
+
+window.addEventListener("mouseup", e => {
+
+if(e.button !== 0) return;
+
+mouseDown = false;
+
+});
+  
+  window.addEventListener("mousemove", e => {
+if(mouseDown){
+camAngle -= e.movementX * 0.01;
+}
+});
+  
+/* DISABLE RIGHT MOUSE BUTTON */
+
+window.addEventListener("contextmenu", e => {
+e.preventDefault();
+});
+
+window.addEventListener("mousedown", e => {
+
+if(e.button === 2){
+e.preventDefault();
+e.stopPropagation();
+}
+
+});
+
+window.addEventListener("mouseup", e => {
+
+if(e.button === 2){
+e.preventDefault();
+e.stopPropagation();
+}
+
+});
+
+/* CHAT */
+
+const chatInput = document.getElementById("chatInput");
+const messages = document.getElementById("messages");
+const chatHint = document.getElementById("chatHint");
+const chatBar = document.getElementById("chatBar");
+
+function openChat(){
+chatOpen = true;
+clearMovement();
+chatHint.style.display = "none";
+chatInput.style.display = "block";
+chatInput.focus();
+}
+
+function closeChat(){
+chatOpen = false;
+chatInput.value = "";
+chatInput.style.display = "none";
+chatHint.style.display = "block";
+chatInput.blur();
+clearMovement();
+}
+
+chatBar.addEventListener("click", () => {
+openChat();
+});
+
+chatInput.addEventListener("focus", () => {
+chatOpen = true;
+clearMovement();
+});
+
+chatInput.addEventListener("blur", () => {
+chatOpen = false;
+mouseDown = false;
+clearMovement();
+});
+
+chatInput.addEventListener("keydown", e => {
+e.stopPropagation();
+
+if(e.key === "Enter"){
+const text = chatInput.value.trim();
+
+if(text){
+const div = document.createElement("div");
+div.className = "chatMessage";
+div.textContent =
+"(" + (localStorage.getItem("ternix_user") || "Guest") + "): " + text;
+
+messages.appendChild(div);
+
+while(messages.children.length > 8){
+messages.removeChild(messages.firstChild);
+}
+}
+
+closeChat();
+}
+
+if(e.key === "Escape"){
+closeChat();
+}
+});
+
+/* LOOP */
+
+function animate(){
+requestAnimationFrame(animate);
+
+if(chatOpen){
+clearMovement();
+}
+
+const speed = 0.10;
+  
+
+  
+/* WASD */
+
+let moveX = 0;
+let moveZ = 0;
+
+if(keys["KeyW"]) moveZ -= 1;
+if(keys["KeyS"]) moveZ += 1;
+if(keys["KeyA"]) moveX -= 1;
+if(keys["KeyD"]) moveX += 1;
+
+if(moveX !== 0 || moveZ !== 0){
+
+const dx =
+moveX * Math.cos(camAngle) -
+moveZ * Math.sin(camAngle);
+
+const dz =
+moveX * Math.sin(camAngle) +
+moveZ * Math.cos(camAngle);
+
+player.position.x += dx * speed;
+player.position.z += dz * speed;
+
+player.rotation.y =
+Math.atan2(dx, dz);
+
+}
+
+/* JUMP */
+
+if(keys["Space"] && grounded){
+velocityY = 0.35;
+grounded = false;
+}
+
+/* GRAVITY */
+
+velocityY -= 0.015;
+player.position.y += velocityY;
+
+grounded = false;
+
+/* платформы */
+
+for(const p of platforms){
+
+const topY =
+p.position.y + 0.5;
+
+const halfW =
+p.geometry.parameters.width / 2;
+
+const halfD =
+p.geometry.parameters.depth / 2;
+
+if(
+player.position.x > p.position.x - halfW &&
+player.position.x < p.position.x + halfW &&
+player.position.z > p.position.z - halfD &&
+player.position.z < p.position.z + halfD
+){
+
+if(
+velocityY <= 0 &&
+player.position.y >= topY - 1 &&
+player.position.y <= topY + 1
+){
+player.position.y = topY;
+velocityY = 0;
+grounded = true;
+}
+}
+}
+
+/* земля */
+
+if(player.position.y < 0){
+player.position.y = 0;
+velocityY = 0;
+grounded = true;
+}
+
+/* CAMERA FOLLOW */
+
+if(firstPerson){
+
+camera.position.x =
+player.position.x + Math.sin(camAngle) * 0.2;
+
+camera.position.y =
+player.position.y + 5.8;
+
+camera.position.z =
+player.position.z + Math.cos(camAngle) * 0.2;
+
+camera.lookAt(
+player.position.x + Math.sin(camAngle) * 10,
+player.position.y + 5.8,
+player.position.z + Math.cos(camAngle) * 10
+);
+
+}else{
+
+camera.position.x =
+player.position.x +
+Math.sin(camAngle) * 12;
+
+camera.position.z =
+player.position.z +
+Math.cos(camAngle) * 12;
+
+camera.position.y =
+player.position.y + 12;
+
+camera.lookAt(
+player.position.x,
+player.position.y + 3,
+player.position.z
+);
+
+}
+
+renderer.render(scene, camera);
+}
+
+animate();
+
+/* RESIZE */
+
+window.addEventListener("resize", () => {
+camera.aspect = window.innerWidth / window.innerHeight;
+
+camera.updateProjectionMatrix();
+
+renderer.setSize(
+window.innerWidth,
+window.innerHeight
+);
+
+});
+
+</script>
+
+</body>
+</html>
