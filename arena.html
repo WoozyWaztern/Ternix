@@ -616,14 +616,17 @@ grounded = true;
 
 /* CAMERA FOLLOW */
   
+cameraDistance +=
+(targetCameraDistance - cameraDistance) * 0.08;
+
 camera.position.x =
 player.position.x +
-Math.sin(camAngle) * 20;
+Math.sin(camAngle) * cameraDistance;
 
 camera.position.z =
 player.position.z +
-Math.cos(camAngle) * 20;
-
+Math.cos(camAngle) * cameraDistance;
+  
 camera.position.y =
 player.position.y + 12;
   
