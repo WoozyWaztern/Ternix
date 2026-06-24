@@ -460,8 +460,8 @@ window.addEventListener("wheel", e => {
 
 targetCameraDistance += e.deltaY * 0.01;
 
-if(targetCameraDistance < 3)
-targetCameraDistance = 3;
+if(targetCameraDistance < 0)
+targetCameraDistance = 0;
 
 if(targetCameraDistance > 20)
 targetCameraDistance = 20;
