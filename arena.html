@@ -681,16 +681,13 @@ player.position.z + Math.cos(camAngle)
 
 }else{
 
-cameraDistance +=
-(targetCameraDistance - cameraDistance) * 0.15;
-
 camera.position.x =
 player.position.x +
-Math.sin(camAngle) * cameraDistance;
+Math.sin(camAngle) * 12;
 
 camera.position.z =
 player.position.z +
-Math.cos(camAngle) * cameraDistance;
+Math.cos(camAngle) * 12;
 
 camera.position.y =
 player.position.y + 12;
