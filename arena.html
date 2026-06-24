@@ -663,9 +663,28 @@ grounded = true;
 }
 
 /* CAMERA FOLLOW */
-  
+
+if(firstPerson){
+
+camera.position.x =
+player.position.x;
+
+camera.position.y =
+player.position.y + 4;
+
+camera.position.z =
+player.position.z;
+
+camera.lookAt(
+player.position.x + Math.sin(camAngle),
+player.position.y + 4,
+player.position.z + Math.cos(camAngle)
+);
+
+}else{
+
 cameraDistance +=
-(targetCameraDistance - cameraDistance) * 0.25;
+(targetCameraDistance - cameraDistance) * 0.15;
 
 camera.position.x =
 player.position.x +
@@ -674,27 +693,9 @@ Math.sin(camAngle) * cameraDistance;
 camera.position.z =
 player.position.z +
 Math.cos(camAngle) * cameraDistance;
-  
+
 camera.position.y =
 player.position.y + 12;
-  
-camera.lookAt(
-player.position.x,
-player.position.y + 3,
-player.position.z
-);if(cameraDistance < 1){
-
-camera.position.x = player.position.x;
-camera.position.y = player.position.y + 3;
-camera.position.z = player.position.z;
-
-camera.lookAt(
-player.position.x + Math.sin(camAngle),
-player.position.y + 3,
-player.position.z + Math.cos(camAngle)
-);
-
-}else{
 
 camera.lookAt(
 player.position.x,
