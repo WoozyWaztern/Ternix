@@ -611,6 +611,42 @@ grounded = false;
 velocityY -= 0.015;
 player.position.y += velocityY;
 
+grounded = false;
+
+/* платформы */
+
+for(const p of platforms){
+
+const topY =
+p.position.y + 0.5;
+
+const halfW =
+p.geometry.parameters.width / 2;
+
+const halfD =
+p.geometry.parameters.depth / 2;
+
+if(
+player.position.x > p.position.x - halfW &&
+player.position.x < p.position.x + halfW &&
+player.position.z > p.position.z - halfD &&
+player.position.z < p.position.z + halfD
+){
+
+if(
+velocityY <= 0 &&
+player.position.y >= topY - 1 &&
+player.position.y <= topY + 1
+){
+player.position.y = topY;
+velocityY = 0;
+grounded = true;
+}
+}
+}
+
+/* земля */
+
 if(player.position.y < 0){
 player.position.y = 0;
 velocityY = 0;
