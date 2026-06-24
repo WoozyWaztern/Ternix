@@ -674,9 +674,9 @@ camera.position.z =
 player.position.z;
 
 camera.lookAt(
-player.position.x + Math.sin(camAngle),
-player.position.y + 4,
-player.position.z + Math.cos(camAngle)
+player.position.x + Math.sin(camAngle) * 10,
+player.position.y + 5.8,
+player.position.z + Math.cos(camAngle) * 10
 );
 
 }else{
