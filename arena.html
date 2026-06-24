@@ -665,13 +665,13 @@ grounded = true;
 if(firstPerson){
 
 camera.position.x =
-player.position.x;
+player.position.x + Math.sin(camAngle) * 0.2;
 
 camera.position.y =
-player.position.y + 4;
+player.position.y + 5.8;
 
 camera.position.z =
-player.position.z;
+player.position.z + Math.cos(camAngle) * 0.2;
 
 camera.lookAt(
 player.position.x + Math.sin(camAngle) * 10,
