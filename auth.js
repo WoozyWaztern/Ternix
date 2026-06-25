@@ -107,3 +107,22 @@ function login() {
         alert("Wrong password!");
     }
 }
+
+const showPass =
+document.getElementById("showPass");
+
+if(showPass){
+
+showPass.addEventListener("change",()=>{
+
+const pass =
+document.getElementById("pass");
+
+pass.type =
+showPass.checked
+? "text"
+: "password";
+
+});
+
+}
