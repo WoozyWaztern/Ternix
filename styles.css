@@ -133,3 +133,97 @@ body{
 .error::placeholder{
     color:#dc2626;
 }
+
+/* ---------- HOME ---------- */
+
+.home-wrapper{
+    max-width:1200px;
+    margin:40px auto;
+    padding:0 30px;
+}
+
+.user-panel{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.user-panel h2{
+    margin:0;
+    color:#2452e6;
+    font-size:34px;
+}
+
+.logout-btn{
+    background:#ef4444;
+    color:white;
+    border:none;
+    border-radius:6px;
+    padding:10px 22px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+}
+
+.games-title{
+    font-size:28px;
+    font-weight:bold;
+    margin-bottom:18px;
+    color:#333;
+}
+
+.game-card{
+    width:340px;
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+.game-banner{
+    height:170px;
+    background:linear-gradient(135deg,#6363FF,#4545dd);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:34px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+.game-info{
+    padding:20px;
+}
+
+.game-info h3{
+    margin:0;
+    color:#2452e6;
+    font-size:28px;
+}
+
+.game-info p{
+    color:#666;
+    margin:12px 0 20px;
+    line-height:1.5;
+}
+
+.play-btn{
+    width:100%;
+    border:none;
+    border-radius:6px;
+    background:#facc15;
+    padding:12px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.play-btn:hover{
+    background:#eab308;
+}
