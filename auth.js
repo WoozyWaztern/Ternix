@@ -96,33 +96,100 @@ alert(
 
 }
 
-function login() {
-    let user = document.getElementById("user").value;
-    let pass = document.getElementById("pass").value;
+function login(){
 
-    if(localStorage.getItem(user) === pass) {
-        localStorage.setItem("ternix_user", user);
-        window.location = "home.html";
-    } else {
-        alert("Wrong password!");
-    }
+const username =
+document.getElementById("user").value.trim();
+
+const password =
+document.getElementById("pass").value;
+
+const users =
+JSON.parse(
+localStorage.getItem("ternix_users") || "{}"
+);
+
+if(users[username] && users[username] === password){
+
+localStorage.setItem(
+"ternix_user",
+username
+);
+
+location.href = "home.html";
+
+}else{
+
+showError(
+"Incorrect username or password."
+);
+
 }
 
-const showPass =
-document.getElementById("showPass");
+}
 
-if(showPass){
+function showError(text){
 
-showPass.addEventListener("change",()=>{
+const user =
+document.getElementById("user");
 
 const pass =
 document.getElementById("pass");
 
-pass.type =
-showPass.checked
-? "text"
-: "password";
+user.style.display = "none";
+pass.style.display = "none";
 
-});
+let error =
+document.getElementById("loginError");
+
+if(!error){
+
+error =
+document.createElement("div");
+
+error.id = "loginError";
+
+error.style.color = "#e11d48";
+error.style.fontWeight = "bold";
+error.style.marginTop = "15px";
+
+pass.parentNode.insertBefore(
+error,
+pass.nextSibling
+);
 
 }
+
+error.innerText = text;
+
+}
+
+function restoreInputs(){
+
+const user =
+document.getElementById("user");
+
+const pass =
+document.getElementById("pass");
+
+user.style.display = "";
+pass.style.display = "";
+
+const error =
+document.getElementById("loginError");
+
+if(error){
+error.remove();
+}
+
+}
+
+document.getElementById("user").addEventListener(
+"focus",
+restoreInputs
+);
+
+document.getElementById("pass").addEventListener(
+"focus",
+restoreInputs
+);
