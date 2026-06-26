@@ -139,3 +139,35 @@ body{
     padding:10px 15px;
     cursor:pointer;
 }
+
+.password-box{
+position:relative;
+}
+
+.password-box input{
+padding-right:45px;
+}
+
+#togglePass{
+position:absolute;
+right:12px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+}
+
+input.error{
+
+border:2px solid #d93025;
+
+color:#d93025;
+
+}
+
+input.error::placeholder{
+
+color:#d93025;
+
+opacity:1;
+
+}
