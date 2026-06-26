@@ -1,173 +1,171 @@
-body{
-    margin:0;
-    font-family:Verdana,Arial,sans-serif;
-    background:#ececec;
-}
+const userInput = document.getElementById("user");
+const passInput = document.getElementById("pass");
 
-/* ВЕРХ */
+/* ---------- HELPERS ---------- */
 
-.topbar{
-    height:80px;
-    background:#6363FF;
-    border-bottom:6px solid #facc15;
-    display:flex;
-    align-items:center;
-    padding-left:15px;
-}
+function clearErrors(){
 
-.logo-image{
-    height:60px;
-    width:auto;
-}
+userInput.value = "";
+passInput.value = "";
 
-/* ЛОГИН */
+userInput.placeholder = "Username";
+passInput.placeholder = "Password";
 
-.login-box{
-    width:420px;
-    max-width:90%;
-    background:white;
-    margin:100px auto;
-    padding:25px;
-    border:1px solid #d0d0d0;
-}
-
-.login-box h1{
-    margin-top:0;
-    color:#2452e6;
-    font-size:36px;
-    font-weight:bold;
-    white-space:nowrap;
-}
-
-.login-box p{
-    color:#666;
-    font-size:18px;
-    margin-bottom:20px;
-}
-
-.login-box input{
-    width:100%;
-    box-sizing:border-box;
-    padding:12px;
-    margin-top:10px;
-    border:1px solid #aaa;
-    font-size:16px;
-}
-
-.buttons{
-    margin-top:18px;
-}
-
-.buttons button{
-    background:#facc15;
-    border:none;
-    padding:12px 24px;
-    cursor:pointer;
-    font-weight:bold;
-    font-size:16px;
-    margin-right:8px;
-}
-
-.buttons button:hover{
-    background:#eab308;
-}
-
-/* HOME */
-
-.home-wrapper{
-    width:1100px;
-    max-width:95%;
-    margin:30px auto;
-}
-
-.user-panel{
-    background:white;
-    border:1px solid #bdbdbd;
-    padding:15px;
-    margin-bottom:20px;
-}
-
-.user-panel h2{
-    margin:0;
-    color:#2452e6;
-}
-
-.games-title{
-    font-size:24px;
-    margin-bottom:15px;
-}
-
-.game-card{
-    background:white;
-    border:1px solid #bdbdbd;
-    width:350px;
-    overflow:hidden;
-}
-
-.game-banner{
-    height:180px;
-    background:#6363FF;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:white;
-    font-size:34px;
-    font-weight:bold;
-}
-
-.game-info{
-    padding:15px;
-}
-
-.play-btn{
-    background:#facc15;
-    border:none;
-    padding:12px 25px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.play-btn:hover{
-    background:#eab308;
-}
-
-.logout-btn{
-    float:right;
-    background:#ef4444;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    cursor:pointer;
-}
-
-.password-box{
-position:relative;
-}
-
-.password-box input{
-padding-right:45px;
-}
-
-#togglePass{
-position:absolute;
-right:12px;
-top:50%;
-transform:translateY(-50%);
-cursor:pointer;
-}
-
-input.error{
-
-border:2px solid #d93025;
-
-color:#d93025;
+userInput.style.color = "";
+passInput.style.color = "";
 
 }
 
-input.error::placeholder{
+userInput.addEventListener("focus", clearErrors);
+passInput.addEventListener("focus", clearErrors);
 
-color:#d93025;
+function usernameError(text){
 
-opacity:1;
+userInput.value = "";
+userInput.placeholder = text;
+userInput.style.color = "#dc2626";
+
+}
+
+function passwordError(text){
+
+passInput.value = "";
+passInput.placeholder = text;
+passInput.style.color = "#dc2626";
+
+}
+
+/* ---------- REGISTER ---------- */
+
+function register(){
+
+const username = userInput.value.trim();
+const password = passInput.value;
+
+const usernameRegex =
+/^[A-Za-z0-9_]{3,20}$/;
+
+if(!usernameRegex.test(username)){
+usernameError("3-20 letters, numbers or _");
+return;
+}
+
+const bannedWords=[
+
+"fuck",
+"bitch",
+"shit",
+"asshole",
+"nigger",
+"nigga",
+"faggot",
+"hitler",
+"nazi",
+"terrorist"
+
+];
+
+const lower=username.toLowerCase();
+
+for(const word of bannedWords){
+
+if(lower.includes(word)){
+usernameError("Invalid username");
+return;
+}
+
+}
+
+if(password.length<8){
+passwordError("Minimum 8 characters");
+return;
+}
+
+const forbidden=
+/[!\"@#№$;%:^?&*()\-+=\/}{\]\[\\|:;',.]/;
+
+if(forbidden.test(password)){
+passwordError("Forbidden symbols");
+return;
+}
+
+const users=
+JSON.parse(
+localStorage.getItem("ternix_users")||"{}"
+);
+
+if(users[username]){
+usernameError("Username already exists");
+return;
+}
+
+users[username]=password;
+
+localStorage.setItem(
+"ternix_users",
+JSON.stringify(users)
+);
+
+userInput.value="";
+passInput.value="";
+
+userInput.placeholder="Account created!";
+passInput.placeholder="Now login";
+
+}
+
+/* ---------- LOGIN ---------- */
+
+function login(){
+
+const username=userInput.value.trim();
+const password=passInput.value;
+
+const users=
+JSON.parse(
+localStorage.getItem("ternix_users")||"{}"
+);
+
+if(!users[username]){
+usernameError("Incorrect username");
+return;
+}
+
+if(users[username]!==password){
+passwordError("Incorrect password");
+return;
+}
+
+localStorage.setItem(
+"ternix_user",
+username
+);
+
+location.href="home.html";
+
+}
+
+/* ---------- SHOW / HIDE PASSWORD ---------- */
+
+const toggle =
+document.getElementById("togglePassword");
+
+if(toggle){
+
+toggle.onclick=function(){
+
+if(passInput.type==="password"){
+
+passInput.type="text";
+toggle.classList.add("show");
+
+}else{
+
+passInput.type="password";
+toggle.classList.remove("show");
+
+}
+
+};
 
 }
