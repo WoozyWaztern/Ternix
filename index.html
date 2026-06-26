@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Ternix</title>
 
 <link rel="stylesheet" href="styles.css">
@@ -11,46 +13,65 @@
 <body>
 
 <div class="topbar">
-    <img src="Ternix.logo.png" class="logo-image">
+
+<img
+src="Ternix.logo.png"
+class="logo-image">
+
 </div>
 
 <div class="login-box">
 
-    <h1>Welcome to Ternix</h1>
-    <p>Create an account or login</p>
+<h1>Welcome to Ternix</h1>
 
-    <input id="user" placeholder="Username">
+<p>Create an account or login</p>
 
- <div class="password-box">
+<input
+id="user"
+type="text"
+placeholder="Username"
+autocomplete="off">
+
+<div class="password-box">
 
 <input
 id="pass"
 type="password"
-placeholder="Password">
+placeholder="Password"
+autocomplete="off">
+
+<button
+type="button"
+id="togglePassword"
+class="eye-button">
 
 <svg
-id="togglePass"
-viewBox="0 0 24 24"
-width="22"
-height="22">
+id="eyeIcon"
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24">
 
 <path
-fill="#666"
-d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2.5A2.5 2.5 0 1 0 12 9a2.5 2.5 0 0 0 0 5z"/>
+id="eyePath"
+fill="currentColor"
+d="M12 5C7 5 2.7 8.1 1 12c1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2.2A1.8 1.8 0 1 0 12 10a1.8 1.8 0 0 0 0 3.6"/>
 
 </svg>
 
-</div>
-    
-<label style="display:block;margin-top:10px;">
-<input type="checkbox" id="showPass">
- Show password
-</label>
+</button>
 
-    <div class="buttons">
-        <button onclick="register()">Register</button>
-        <button onclick="login()">Login</button>
-    </div>
+</div>
+
+<div class="buttons">
+
+<button onclick="register()">
+Register
+</button>
+
+<button onclick="login()">
+Login
+</button>
+
+</div>
 
 </div>
 
