@@ -1,171 +1,135 @@
-const userInput = document.getElementById("user");
-const passInput = document.getElementById("pass");
-
-/* ---------- HELPERS ---------- */
-
-function clearErrors(){
-
-userInput.value = "";
-passInput.value = "";
-
-userInput.placeholder = "Username";
-passInput.placeholder = "Password";
-
-userInput.style.color = "";
-passInput.style.color = "";
-
+body{
+    margin:0;
+    font-family:Verdana,Arial,sans-serif;
+    background:#ececec;
 }
 
-userInput.addEventListener("focus", clearErrors);
-passInput.addEventListener("focus", clearErrors);
+/* ---------- TOP BAR ---------- */
 
-function usernameError(text){
-
-userInput.value = "";
-userInput.placeholder = text;
-userInput.style.color = "#dc2626";
-
+.topbar{
+    height:80px;
+    background:#6363FF;
+    display:flex;
+    align-items:center;
+    padding-left:18px;
+    border-bottom:5px solid #facc15;
 }
 
-function passwordError(text){
-
-passInput.value = "";
-passInput.placeholder = text;
-passInput.style.color = "#dc2626";
-
-}
-
-/* ---------- REGISTER ---------- */
-
-function register(){
-
-const username = userInput.value.trim();
-const password = passInput.value;
-
-const usernameRegex =
-/^[A-Za-z0-9_]{3,20}$/;
-
-if(!usernameRegex.test(username)){
-usernameError("3-20 letters, numbers or _");
-return;
-}
-
-const bannedWords=[
-
-"fuck",
-"bitch",
-"shit",
-"asshole",
-"nigger",
-"nigga",
-"faggot",
-"hitler",
-"nazi",
-"terrorist"
-
-];
-
-const lower=username.toLowerCase();
-
-for(const word of bannedWords){
-
-if(lower.includes(word)){
-usernameError("Invalid username");
-return;
-}
-
-}
-
-if(password.length<8){
-passwordError("Minimum 8 characters");
-return;
-}
-
-const forbidden=
-/[!\"@#№$;%:^?&*()\-+=\/}{\]\[\\|:;',.]/;
-
-if(forbidden.test(password)){
-passwordError("Forbidden symbols");
-return;
-}
-
-const users=
-JSON.parse(
-localStorage.getItem("ternix_users")||"{}"
-);
-
-if(users[username]){
-usernameError("Username already exists");
-return;
-}
-
-users[username]=password;
-
-localStorage.setItem(
-"ternix_users",
-JSON.stringify(users)
-);
-
-userInput.value="";
-passInput.value="";
-
-userInput.placeholder="Account created!";
-passInput.placeholder="Now login";
-
+.logo-image{
+    height:60px;
+    width:auto;
+    user-select:none;
+    pointer-events:none;
 }
 
 /* ---------- LOGIN ---------- */
 
-function login(){
-
-const username=userInput.value.trim();
-const password=passInput.value;
-
-const users=
-JSON.parse(
-localStorage.getItem("ternix_users")||"{}"
-);
-
-if(!users[username]){
-usernameError("Incorrect username");
-return;
+.login-box{
+    width:420px;
+    max-width:90%;
+    background:white;
+    margin:90px auto;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
 }
 
-if(users[username]!==password){
-passwordError("Incorrect password");
-return;
+.login-box h1{
+    margin:0;
+    color:#2452e6;
+    font-size:34px;
+    text-align:center;
+    white-space:nowrap;
 }
 
-localStorage.setItem(
-"ternix_user",
-username
-);
-
-location.href="home.html";
-
+.login-box p{
+    margin-top:8px;
+    margin-bottom:25px;
+    color:#666;
+    text-align:center;
 }
 
-/* ---------- SHOW / HIDE PASSWORD ---------- */
-
-const toggle =
-document.getElementById("togglePassword");
-
-if(toggle){
-
-toggle.onclick=function(){
-
-if(passInput.type==="password"){
-
-passInput.type="text";
-toggle.classList.add("show");
-
-}else{
-
-passInput.type="password";
-toggle.classList.remove("show");
-
+.login-box input{
+    width:100%;
+    box-sizing:border-box;
+    padding:13px;
+    font-size:16px;
+    border:1px solid #bdbdbd;
+    border-radius:6px;
+    outline:none;
+    transition:.15s;
 }
 
-};
+.login-box input:focus{
+    border-color:#2452e6;
+}
 
+/* ---------- PASSWORD ---------- */
+
+.password-box{
+    position:relative;
+    margin-top:12px;
+}
+
+.password-box input{
+    padding-right:45px;
+}
+
+.eye-button{
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    width:24px;
+    height:24px;
+    border:none;
+    background:none;
+    cursor:pointer;
+    color:#777;
+    padding:0;
+}
+
+.eye-button:hover{
+    color:#2452e6;
+}
+
+.eye-button svg{
+    width:24px;
+    height:24px;
+    display:block;
+}
+
+/* ---------- BUTTONS ---------- */
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:22px;
+}
+
+.buttons button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:#facc15;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.buttons button:hover{
+    background:#eab308;
+}
+
+/* ---------- ERROR ---------- */
+
+.error{
+    border-color:#dc2626 !important;
+    color:#dc2626 !important;
+}
+
+.error::placeholder{
+    color:#dc2626;
 }
