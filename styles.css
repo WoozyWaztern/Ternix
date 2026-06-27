@@ -215,6 +215,12 @@ box-shadow:none;
     line-height:1.5;
 }
 
+.home-wrapper{
+background:#ececec;
+min-height:calc(100vh - 80px);
+padding:35px;
+}
+
 .play-btn{
     width:100%;
     border:none;
