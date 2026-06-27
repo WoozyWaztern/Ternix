@@ -101,11 +101,18 @@ const banned=[
 "terrorist"
 ];
 
-const lower=username.toLowerCase();
+const normalized = username
+.toLowerCase()
+.replace(/[^a-z0-9]/g,"")
+.replace(/1/g,"i")
+.replace(/3/g,"e")
+.replace(/4/g,"a")
+.replace(/5/g,"s")
+.replace(/0/g,"o");
 
-for(const word of banned){
+for(const word of bannedWords){
 
-if(lower.includes(word)){
+if(normalized.includes(word)){
 usernameError("Invalid username");
 return;
 }
