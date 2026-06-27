@@ -111,7 +111,7 @@ body{
     flex:1;
     padding:12px;
     border:none;
-    border-radius:6px;
+    border-radius:0;
     background:#facc15;
     font-size:16px;
     font-weight:bold;
