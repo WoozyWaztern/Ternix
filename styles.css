@@ -224,7 +224,7 @@ padding:35px;
 .play-btn{
     width:100%;
     border:none;
-    border-radius:6px;
+    border-radius:0;
     background:#facc15;
     padding:12px;
     font-size:17px;
