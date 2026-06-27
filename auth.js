@@ -83,11 +83,16 @@ const password=passInput.value;
 
 const usernameRegex=/^[A-Za-z0-9_]{3,20}$/;
 
+if(/[А-Яа-яЁё]/.test(username)){
+usernameError("Invalid username");
+return;
+}
+
 if(!usernameRegex.test(username)){
 usernameError("3-20 letters, numbers or _");
 return;
 }
-
+  
 const banned=[
 "fuck",
 "bitch",
