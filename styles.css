@@ -31,7 +31,8 @@ body{
     margin:90px auto;
     padding:30px;
     border-radius:0;
-    box-shadow:0 8px 20px rgba(0,0,0,.15);
+border:1px solid #bdbdbd;
+box-shadow:none;
 }
 
 .login-box h1{
