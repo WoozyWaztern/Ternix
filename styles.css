@@ -182,7 +182,8 @@ body{
     background:white;
     border-radius:0;
     overflow:hidden;
-    box-shadow:0 8px 18px rgba(0,0,0,.15);
+border:1px solid #bdbdbd;
+box-shadow:none;
 }
 
 .game-banner{
