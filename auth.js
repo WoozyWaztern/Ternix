@@ -92,19 +92,6 @@ if(!usernameRegex.test(username)){
 usernameError("3-20 letters, numbers or _");
 return;
 }
-  
-const banned=[
-"fuck",
-"bitch",
-"shit",
-"asshole",
-"nigger",
-"nigga",
-"faggot",
-"hitler",
-"nazi",
-"terrorist"
-];
 
 const normalized = username
 .toLowerCase()
