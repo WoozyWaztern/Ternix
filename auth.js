@@ -115,7 +115,7 @@ const normalized = username
 .replace(/5/g,"s")
 .replace(/0/g,"o");
 
-for(const word of bannedWords){
+for(const word of banned){
 
 if(normalized.includes(word)){
 usernameError("Invalid username");
@@ -123,7 +123,7 @@ return;
 }
 
 }
-
+  
 if(password.length<8){
 passwordError("Minimum 8 characters");
 return;
