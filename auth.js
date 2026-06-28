@@ -171,25 +171,6 @@ function login(){
 const username=userInput.value.trim();
 const password=passInput.value;
 
-const bannedWords = [
-"fuck",
-"bitch",
-"shit",
-"asshole",
-"nigger",
-"nigga",
-"faggot",
-"hitler",
-"nazi",
-"terrorist",
-"sex",
-"porn",
-"admin",
-"owner",
-"moderator",
-"mod"
-];
-
 const users=JSON.parse(localStorage.getItem("ternix_users")||"{}");
 
 if(!users[username]){
